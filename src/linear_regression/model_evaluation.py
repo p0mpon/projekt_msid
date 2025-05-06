@@ -3,7 +3,7 @@ from sklearn.metrics import root_mean_squared_error, r2_score, mean_absolute_err
 
 def metrics_table(Y_test, y_pred_list, indexes):
     metrics = {
-        'R2': [r2_score(Y_test, y_pred) for y_pred in y_pred_list],
+        'R²': [r2_score(Y_test, y_pred) for y_pred in y_pred_list],
         'RMSE': [root_mean_squared_error(Y_test, y_pred) for y_pred in y_pred_list],
         'MAE': [mean_absolute_error(Y_test, y_pred) for y_pred in y_pred_list]
     }
