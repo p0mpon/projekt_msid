@@ -12,15 +12,18 @@ pip install -r requirements.txt
 Download the dataset:  
 [Student Performance Factors Dataset on Kaggle](https://www.kaggle.com/datasets/lainguyn123/student-performance-factors)
 
+<br>
+
+# Part I
+
+Data statistics and visualisations.
+
 ### Running
 To generate and save the results of data analysis and visualizations, run:
 ```bash
 python data_analysis_main.py
 ```
-
-# Part I
-
-Data statistics and visualisations.
+Or click "Run All" in ```jupyter_visualizations.ipynb``` jupyter file.
 
 ### Statistics include:
 For numerical features:
@@ -49,3 +52,24 @@ For categorical features:
 - pie charts
 - boxplots
 - violinplots
+
+<br>
+
+# Part II
+
+### Running
+
+Click "Run All" in following files:
+- ```models.ipynb``` for comparing 3 different regression models on StudentPerformanceFactors dataset
+- ```linear_regression_numpy.ipynb``` for comparison of linear regression models written in numpy, using closed form solution and gradient descent
+
+### Models used in ```models.ipynb```:
+- Linear regression
+- Random forest regressor
+- Support vector regression
+- Dummy regressor (for comparison)
+
+### Models used in ```linear_regression_numpy.ipynb```:
+- ```LinearRegression``` from sklearn
+- ```LinearRegressionClosedForm``` defined in ```src.linear_regression.models```
+- ```LinearRegressionGradientDescent``` also defined in ```src.linear_regression.models```

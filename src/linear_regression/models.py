@@ -16,6 +16,7 @@ class LinearRegressionClosedForm():
         X_with_intercept = np.c_[np.ones(x.shape[0]), x]
 
         # W = (X^T * X)^-1 * X^T * Y
+        # using pinv instead of inv for possibility of singular matrices
         weights = pinv(X_with_intercept.T.dot(X_with_intercept)).dot(X_with_intercept.T).dot(y)
 
         self.coef_ = weights[1:]
@@ -38,8 +39,8 @@ class LinearRegressionGradientDescent():
         self.learning_rate = learning_rate
         self.n_epochs = n_epochs
         self.batch_size = batch_size
-        self.weights = None
-        self.bias = None
+        self.coef_ = None
+        self.intercept_ = None
     
     def fit(self, x, y):
         if isinstance(x, (pd.DataFrame, pd.Series)):
@@ -48,8 +49,8 @@ class LinearRegressionGradientDescent():
             y = y.values
 
         n_samples, n_features = x.shape
-        self.weights = np.zeros(n_features)
-        self.bias = 0
+        self.coef_ = np.zeros(n_features)
+        self.intercept_ = 0
         
         for _ in range(self.n_epochs):
             indices = np.random.permutation(n_samples)
@@ -60,7 +61,7 @@ class LinearRegressionGradientDescent():
                 x_batch = x_shuffled[i:i+self.batch_size]
                 y_batch = y_shuffled[i:i+self.batch_size]
                 
-                y_pred = x_batch.dot(self.weights) + self.bias
+                y_pred = x_batch.dot(self.coef_) + self.intercept_
                 
                 # derivative of the weights
                 # dL/dw = 1/m * X^T * (X * W - Y)
@@ -80,17 +81,17 @@ class LinearRegressionGradientDescent():
                 # Y = actual data
                 db = (1/self.batch_size) * np.sum(y_pred - y_batch)
 
-                self.weights -= self.learning_rate * dw
-                self.bias -= self.learning_rate * db
+                self.coef_ -= self.learning_rate * dw
+                self.intercept_ -= self.learning_rate * db
     
     def predict(self, x):
-        if self.weights is None or self.bias is None:
+        if self.coef_ is None or self.intercept_ is None:
             raise Exception("Model is not fitted yet.")
         
         if isinstance(x, (pd.DataFrame, pd.Series)):
             x = x.values
             
-        return x.dot(self.weights) + self.bias
+        return x.dot(self.coef_) + self.intercept_
     
 
 def mean_squared_error(y_true, y_pred):
