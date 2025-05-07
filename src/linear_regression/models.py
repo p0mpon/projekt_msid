@@ -92,8 +92,3 @@ class LinearRegressionGradientDescent():
             x = x.values
             
         return x.dot(self.coef_) + self.intercept_
-    
-
-def mean_squared_error(y_true, y_pred):
-    m = len(y_pred)
-    return np.sum((y_pred - y_true) ** 2) / m

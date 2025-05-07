@@ -1,9 +1,17 @@
 import pandas as pd
+import numpy as np
 from sklearn.metrics import root_mean_squared_error, r2_score, mean_absolute_error
+
+
+def mean_squared_error(y_true, y_pred):
+    m = len(y_pred)
+    return np.sum((y_pred - y_true) ** 2) / m
+
 
 def metrics_table(Y_test, y_pred_list, indexes):
     metrics = {
         'R²': [r2_score(Y_test, y_pred) for y_pred in y_pred_list],
+        'MSE': [mean_squared_error(Y_test, y_pred) for y_pred in y_pred_list],
         'RMSE': [root_mean_squared_error(Y_test, y_pred) for y_pred in y_pred_list],
         'MAE': [mean_absolute_error(Y_test, y_pred) for y_pred in y_pred_list]
     }
