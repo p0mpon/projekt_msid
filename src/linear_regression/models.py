@@ -64,22 +64,22 @@ class LinearRegressionGradientDescent():
                 y_pred = x_batch.dot(self.coef_) + self.intercept_
                 
                 # derivative of the weights
-                # dL/dw = 1/m * X^T * (X * W - Y)
+                # dL/dw = 2/m * X^T * (X * W - Y)
                 # where:
                 # m = batch size
                 # X^T = transposed X
                 # X * W = Y^ = predicted data
                 # Y = actual data
-                dw = (1/self.batch_size) * x_batch.T.dot(y_pred - y_batch)
+                dw = (2/self.batch_size) * x_batch.T.dot(y_pred - y_batch)
 
                 # derivative of the bias
-                # dL/db = 1/m * ∑(X * W - Y)
+                # dL/db = 2/m * ∑(X * W - Y)
                 # where:
                 # m = batch size
                 # ∑(X * W - Y) sum of the matrix
                 # X * W = Y^ = predicted data
                 # Y = actual data
-                db = (1/self.batch_size) * np.sum(y_pred - y_batch)
+                db = (2/self.batch_size) * np.sum(y_pred - y_batch)
 
                 self.coef_ -= self.learning_rate * dw
                 self.intercept_ -= self.learning_rate * db
