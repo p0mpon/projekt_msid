@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from numpy.linalg import pinv
+from sklearn.metrics import mean_squared_error
 
 class LinearRegressionClosedForm():
     def __init__(self, regularization=False, alpha=1.0):
@@ -49,12 +50,21 @@ class LinearRegressionGradientDescent():
         self.l1_ratio = l1_ratio
         self.coef_ = None
         self.intercept_ = None
+
+        self.x_test = None
+        self.y_test = None
+        self.train_errors = []
+        self.test_errors = []
     
     def fit(self, x, y):
         if isinstance(x, (pd.DataFrame, pd.Series)):
             x = x.values
         if isinstance(y, (pd.DataFrame, pd.Series)):
             y = y.values
+        if isinstance(self.x_test, (pd.DataFrame, pd.Series)):
+            self.x_test = self.x_test.values
+        if isinstance(self.y_test, (pd.DataFrame, pd.Series)):
+            self.y_test = self.y_test.values
 
         n_samples, n_features = x.shape
         self.coef_ = np.zeros(n_features)
@@ -85,6 +95,15 @@ class LinearRegressionGradientDescent():
 
                 self.coef_ -= self.learning_rate * dw
                 self.intercept_ -= self.learning_rate * db
+
+            y_train_pred = self.predict(x)
+            train_mse = mean_squared_error(y, y_train_pred)
+            self.train_errors.append(train_mse)
+
+            if self.x_test is not None and self.y_test is not None:
+                y_val_pred = self.predict(self.x_test)
+                val_mse = mean_squared_error(self.y_test, y_val_pred)
+                self.test_errors.append(val_mse)
     
     def predict(self, x):
         if self.coef_ is None or self.intercept_ is None:
@@ -94,6 +113,10 @@ class LinearRegressionGradientDescent():
             x = x.values
             
         return x.dot(self.coef_) + self.intercept_
+    
+    def track_error(self, x_test, y_test):
+        self.x_test = x_test
+        self.y_test = y_test
     
     
 class LogisticRegressionGradientDescent():
