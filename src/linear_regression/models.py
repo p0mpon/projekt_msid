@@ -20,6 +20,7 @@ class LinearRegressionClosedForm():
 
         if self.regularization:
             I = np.eye(X_with_intercept.shape[1])
+            I[0, 0] = 0
             weights = pinv(X_with_intercept.T.dot(X_with_intercept) + self.alpha * I).dot(X_with_intercept.T).dot(y)            
         else:
             weights = pinv(X_with_intercept.T.dot(X_with_intercept)).dot(X_with_intercept.T).dot(y)
